@@ -1,0 +1,1 @@
+gcc -g -O0 -v -da -Q main.c -lm && ./a.out 54
