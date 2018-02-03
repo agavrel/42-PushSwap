@@ -166,12 +166,29 @@ static inline void mergeSort(t_node arr[], size_t left, size_t right)
         merge(arr, left, m, right);
     }
 }
+/*
+static inline int partition (t_node arr[], int l, int h)
+{
+    int x = arr[h].value;
+    int i = (l - 1);
 
-static inline size_t partition(t_node arr[], size_t left, size_t right)
+    for (int j = l; j <= h- 1; j++)
+    {
+        if (arr[j].value <= x)
+        {
+            i++;
+            swap (&arr[i], &arr[j]);
+        }
+    }
+    swap (&arr[i + 1], &arr[h]);
+    return (i + 1);
+}
+*/
+static inline size_t partition(t_node arr[], int left, int right)
 {
     int pivot;
-    size_t i;
-    size_t j;
+    int i;
+    int j;
 //    int tmp;
 
     pivot = arr[right].value;
@@ -181,19 +198,18 @@ static inline size_t partition(t_node arr[], size_t left, size_t right)
     {
         if (arr[j].value <= pivot)
             swap(&arr[i++], &arr[j]);
-/*        tmp = (arr[j].value - pivot) >> 31;
-        swap(&arr[(~tmp & i)], &arr[j]);
-        i -= tmp; // equivalent to ++i if t = -1, else nothing happens. nb: useless good compilers will make the conditional move optimization */
+//        tmp = (arr[j].value - pivot) >> 31;
+//        swap(&arr[(~tmp & i)], &arr[j]);
+//        i -= tmp; // equivalent to ++i if t = -1, else nothing happens. nb: useless good compilers will make the conditional move optimization
         ++j;
     }
     swap(&arr[i], &arr[right]);
     return (i);
 }
 
-
-static inline void quickSortIterative (t_node arr[], size_t left, size_t right)
+static inline void quickSortIterative (t_node arr[], int left, int right)
 {
-    int stack[right - left + 1 ];
+    int stack[right - left + 1];
     int top;
     int p;
 
@@ -238,7 +254,7 @@ static inline void introSort(t_node arr[], size_t size)
 //    else if (partitionSize > (log(size) * 2))
 //     mergeSort(arr, 0, size - 1);
 //    else
-         quickSortIterative(arr, 0, size - 1);
+//         quickSortIterative(arr, 0, size - 1);
 }
 
 static inline void testInit(size_t size)
@@ -276,10 +292,11 @@ static inline void testInit(size_t size)
     /* launch algo and time it */
     clock_t start, end;
     start = clock();
+    const size_t partitionSize = partition(node, 0, size - 1);
     if (size < 1000) // 2000 seems to be the size limit where introSort achieves better results then shellSort
         shellSort(node, size); //  // runs in about 0.34sd
     else
-        introSort(node, size);
+        quickSortIterative(node, 0, size - 1);
     end = clock();
 
 
