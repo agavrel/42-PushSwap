@@ -19,7 +19,7 @@ static inline void swap(t_node *a, t_node *b)
 static inline void shellSort(t_node arr[], size_t size)
 {
     size_t gap = size / 2;
-    int tmp;
+    t_node tmp;
     size_t j;
     size_t i;
 
@@ -28,14 +28,14 @@ static inline void shellSort(t_node arr[], size_t size)
         i = gap;
         while (i < size)
         {
-            tmp = arr[i].value;
+            tmp = arr[i];
             j = i;
-            while (j >= gap && arr[j - gap].value > tmp)
+            while (j >= gap && arr[j - gap].value > tmp.value)
             {
-                arr[j].value = arr[j - gap].value;
+                arr[j] = arr[j - gap];
                 j -= gap;
             }
-            arr[j].value = tmp;
+            arr[j] = tmp;
             ++i;
         }
         gap >>= 1;
@@ -95,6 +95,77 @@ static inline void heapSort(t_node arr[], size_t size)
     }
 }
 
+static inline void merge(t_node arr[], int left, int m, int right)
+{
+    int i, j, k;
+    int n1 = m - left + 1;
+    int n2 =  right - m;
+
+    /* create temp arrays */
+    t_node L[n1], R[n2];
+
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = left; // Initial index of merged subarray
+    while (i < n1 && j < n2)
+    {
+        if (L[i].value <= R[j].value)
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    /* Copy the remaining elements of L[], if there
+       are any */
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    /* Copy the remaining elements of R[], if there
+       are any */
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+/* l is for left index and r is right index of the
+   sub-array of arr to be sorted */
+static inline void mergeSort(t_node arr[], size_t left, size_t right)
+{
+    int m;
+
+    if (left < right)
+    {
+        // Same as (l+r)/2, but avoids overflow for
+        // large l and h
+        m = left + (right - left) / 2;
+
+        // Sort first and second halves
+        mergeSort(arr, left, m);
+        mergeSort(arr, m + 1, right);
+        merge(arr, left, m, right);
+    }
+}
 
 static inline size_t partition(t_node arr[], size_t left, size_t right)
 {
@@ -119,6 +190,33 @@ static inline size_t partition(t_node arr[], size_t left, size_t right)
     return (i);
 }
 
+
+static inline void quickSortIterative (t_node arr[], size_t left, size_t right)
+{
+    int stack[right - left + 1 ];
+    int top;
+    int p;
+
+    stack[top] = left;
+    stack[++top] = right;
+    while (top >= 0)
+    {
+        right = stack[top--];
+        left = stack[top--];
+        p = partition(arr, left, right);
+        if (p - 1 > left)
+        {
+            stack[++top] = left;
+            stack[++top] = p - 1;
+        }
+        if (p + 1 < right)
+        {
+            stack[++top] = p + 1;
+            stack[++top] = right;
+        }
+    }
+}
+
 static inline void quickSortRecursive(t_node arr[], size_t left, size_t right)
 {
     size_t q;
@@ -133,14 +231,14 @@ static inline void quickSortRecursive(t_node arr[], size_t left, size_t right)
 
 static inline void introSort(t_node arr[], size_t size)
 {
-    const size_t partitionSize = partition(arr, 0, size - 1);
+//    const size_t partitionSize = partition(arr, 0, size - 1);
 
-    if (partitionSize < 16)
-        insertionSort(arr, size);
-    else if (partitionSize > (log(size) * 2))
-        heapSort(arr, size);
-    else
-        quickSortRecursive(arr, 0, size - 1);
+//    if (partitionSize < 16)
+//        insertionSort(arr, size);
+//    else if (partitionSize > (log(size) * 2))
+//     mergeSort(arr, 0, size - 1);
+//    else
+         quickSortIterative(arr, 0, size - 1);
 }
 
 static inline void testInit(size_t size)
@@ -150,6 +248,7 @@ static inline void testInit(size_t size)
     size_t  i;
     int     value[size];
     int     rng;
+
 
     /* generate list filled with random numbers */
     srand(time(NULL));
@@ -162,6 +261,7 @@ static inline void testInit(size_t size)
         ++i;
     }
 
+
     /* set original index for each element of the array */
     i = 0;
     while (i < size)
@@ -171,17 +271,17 @@ static inline void testInit(size_t size)
         ++i;
     }
     memcpy(node2, node, sizeof(t_node) * size);
-    /* launch algo and time it */
-    clock_t start, end, start2, end2;
 
+
+    /* launch algo and time it */
+    clock_t start, end;
     start = clock();
-//    if (SIZE < 2000) // 2000 seems to be the size limit where introSort achieves better results then shellSort
-        shellSort(node, size);
+    if (size < 1000) // 2000 seems to be the size limit where introSort achieves better results then shellSort
+        shellSort(node, size); //  // runs in about 0.34sd
+    else
+        introSort(node, size);
     end = clock();
-//    else
-    start2 = clock();
-        introSort(node, size); // runs in about 0.34sd
-    end2 = clock();
+
 
     /* displaying result */
     i = 0;
@@ -190,6 +290,7 @@ static inline void testInit(size_t size)
         printf("original index : %zu, desired index: %zu, value : %d\n", node[i].key, i, node[i].value);
         ++i;
     }
+
 
     /* check that list is correctly sorted */
     int fail = 0;
@@ -203,11 +304,11 @@ static inline void testInit(size_t size)
     }
     printf(fail ? "FAIL\n" : "SUCCESS\n");
 
+
     /* micro-benchmarking time for algo */
     float elapsed_time = (float)(end - start) / (float)CLOCKS_PER_SEC;
     printf("Elapsed time for shellSort: %f seconds\n", elapsed_time);
-    float elapsed_time2 = (float)(end2 - start2) / (float)CLOCKS_PER_SEC;
-    printf("Elapsed time for introSort: %f seconds\n", elapsed_time2);
+
 }
 
 int main(int ac, char **av)
