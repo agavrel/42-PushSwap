@@ -257,25 +257,41 @@ static inline void introSort(t_node arr[], size_t size)
 //         quickSortIterative(arr, 0, size - 1);
 }
 
+static inline void shuffle(int arr[], size_t n)
+{    
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    int usec = tv.tv_usec;
+    srand48(usec);
+    size_t i;
+    size_t j;
+    
+    if (n > 1)
+    {
+        i = n - 1;
+        while (i--)
+        {
+            j = (unsigned int) (drand48()*(i+1));
+            swap(&arr[i], &arr[j]);
+        }
+    }
+}
+
 static inline void testInit(size_t size)
 {
     t_node  node[size];
     t_node  node2[size];
     size_t  i;
     int     value[size];
-    int     rng;
 
-
-    /* generate list filled with random numbers */
-    srand(time(NULL));
+    /* generate list filled with random numbers between -size / 2 and size / 2 */
     i = 0;
-
     while (i < size)
     {
-        rng = rand() % size;
-        value[i] = (rng & 1) ? ~rng : rng;
+        value[i] = i - size / 2;
         ++i;
     }
+    shuffle(value, size);
 
 
     /* set original index for each element of the array */
