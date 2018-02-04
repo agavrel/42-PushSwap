@@ -9,11 +9,13 @@ typedef struct  s_node {
     int value;
 }               t_node;
 
-static inline void swap(t_node *a, t_node *b)
+static inline void swap(void *a, void *b, size_t n)
 {
-    t_node t = *a;
-    *a = *b;
-    *b = t;
+    unsigned char t[n];
+
+    memcpy(t, a, n);
+    memcpy(a, b, n);
+    memcpy(b, t, n);
 }
 
 static inline void shellSort(t_node arr[], size_t size)
@@ -56,7 +58,7 @@ static inline void insertionSort(t_node arr[], size_t size)
         while (j > 0 && arr[j - 1].value > tmp.value)
             --j;
         memmove(&arr[j + 1], &arr[j], sizeof(t_node) * (i - j - 1));
-        swap(&arr[j], &tmp);
+        swap(&arr[j], &tmp, sizeof(t_node));
     }
 }
 
@@ -72,7 +74,7 @@ static inline void maxHeapify(t_node arr[], size_t heapSize, size_t index)
         largest = right;
     if (largest != index)
     {
-        swap(&arr[index], &arr[largest]);
+        swap(&arr[index], &arr[largest], sizeof(t_node));
         maxHeapify(arr, heapSize, largest);
     }
 }
@@ -90,7 +92,7 @@ static inline void heapSort(t_node arr[], size_t size)
     i = size - 1;
     while (i > 0)
     {
-        swap(&arr[i--], &arr[0]);
+        swap(&arr[i--], &arr[0], sizeof(t_node));
         maxHeapify(arr, --heapSize, 0);
     }
 }
@@ -197,13 +199,13 @@ static inline size_t partition(t_node arr[], int left, int right)
     while (j < right)
     {
         if (arr[j].value <= pivot)
-            swap(&arr[i++], &arr[j]);
+            swap(&arr[i++], &arr[j], sizeof(t_node));
 //        tmp = (arr[j].value - pivot) >> 31;
 //        swap(&arr[(~tmp & i)], &arr[j]);
 //        i -= tmp; // equivalent to ++i if t = -1, else nothing happens. nb: useless good compilers will make the conditional move optimization
         ++j;
     }
-    swap(&arr[i], &arr[right]);
+    swap(&arr[i], &arr[right], sizeof(t_node));
     return (i);
 }
 
@@ -257,24 +259,45 @@ static inline void introSort(t_node arr[], size_t size)
 //         quickSortIterative(arr, 0, size - 1);
 }
 
-static inline void shuffle(int arr[], size_t n)
-{    
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    int usec = tv.tv_usec;
-    srand48(usec);
-    size_t i;
-    size_t j;
-    
-    if (n > 1)
+static inline void shuffle(size_t n, int arr[])
+{
+    size_t      rng;
+    size_t      i;
+    const int   tmp[n];
+    int         tmp2[n];
+
+    memcpy(tmp, arr, sizeof(int) * n);
+    bzero(tmp2, sizeof(int) * n);
+    srand(time(NULL));
+    i = 0;
+    while (i < n)
     {
-        i = n - 1;
-        while (i--)
-        {
-            j = (unsigned int) (drand48()*(i+1));
-            swap(&arr[i], &arr[j]);
-        }
+        rng = rand() % (n - i);
+        while (tmp2[rng] == 1)
+            ++rng;
+        tmp2[rng] = 1;
+        arr[i] = tmp[rng];
+        ++i;
     }
+}
+
+/*
+srand(time(NULL));
+const int  tmp[n];
+size_t i;
+
+if (n > 1)
+{
+    i = n - 1;
+    while (i--)
+        arr[i] = tmp[rand() % n];
+}*/
+static inline int checkIfSorted(t_node arr[], size_t n)
+{
+    while (n-- > 1)
+        if (arr[n].value < arr[n - 1].value)
+            return (0);
+    return (1);
 }
 
 static inline void testInit(size_t size)
@@ -291,8 +314,8 @@ static inline void testInit(size_t size)
         value[i] = i - size / 2;
         ++i;
     }
-    shuffle(value, size);
-
+    /* shuffle list */
+    shuffle(size, value);
 
     /* set original index for each element of the array */
     i = 0;
@@ -303,6 +326,7 @@ static inline void testInit(size_t size)
         ++i;
     }
     memcpy(node2, node, sizeof(t_node) * size);
+
 
 
     /* launch algo and time it */
@@ -320,7 +344,9 @@ static inline void testInit(size_t size)
     i = 0;
     while (i < size)
     {
-        printf("original index : %zu, desired index: %zu, value : %d\n", node[i].key, i, node[i].value);
+        printf("desired index: %zu ", i);
+        printf("original index : %zu, value : %d\n", node[i].key, node[i].value);
+        node[i].key = i;
         ++i;
     }
 
@@ -342,7 +368,41 @@ static inline void testInit(size_t size)
     float elapsed_time = (float)(end - start) / (float)CLOCKS_PER_SEC;
     printf("Elapsed time for shellSort: %f seconds\n", elapsed_time);
 
+//  1
+//
+//
+    i = 0;
+    size_t j = 0;
+    while (i < size - 1)
+    {
+        while (j < size - 1)
+        {
+            if (node2[i].value == node[j].value)
+                node2[i].key = node[j].key;
+            ++j;
+        }
+        ++i;
+    }
+
+
+    /* displaying result */
+    i = 0;
+    while (i < size)
+    {
+        printf("desired index: %zu, value : %d\n", node2[i].key, node2[i].value);
+        node[i].key = i;
+        ++i;
+    }
+
+    printf("%d\n", checkIfSorted(node2, size));
+
+
 }
+
+
+
+
+
 
 int main(int ac, char **av)
 {
