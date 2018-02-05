@@ -6,65 +6,87 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/05 14:06:46 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/05 15:59:32 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-static inline int   checkIfSorted(size_t arr[], size_t n)
+static inline int	is_sorted_array(size_t arr[], size_t n)
 {
-    while (n-- > 1)
-        if (arr[n] < arr[n - 1])
-            return (0);
-    return (1);
+	while (n-- > 1)
+		if (arr[n] < arr[n - 1])
+			return (0);
+	return (1);
 }
 
-static inline void	init_oper(int n, t_pai oper[n])
+static inline void	isplay_usage(void)
 {
-	oper[0] = (t_pai) {.key =  "sa", .f = &sa};
-	oper[1] = (t_pai) {.key =  "ra", .f = &ra};
-	oper[2] = (t_pai) {.key =  "rra", .f = &rra};
-
-	oper[3] = (t_pai) {.key =  "sb", .f = &sb};
-	oper[4] = (t_pai) {.key =  "rb", .f = &rb};
-	oper[5] = (t_pai) {.key =  "rrb", .f = &rrb};
-
-	oper[6] = (t_pai) {.key =  "pa", .f = &pa};
-	oper[7] = (t_pai) {.key =  "pb", .f = &pb};
-
-	oper[8] = (t_pai) {.key =  "ss", .f = &ss};
-	oper[9] = (t_pai) {.key =  "rr", .f = &rr};
-	oper[10] = (t_pai) {.key =  "rrr", .f = &rrr};
-
-	oper[11] = (t_pai) {.key =  "@", .f = NULL};
+	ft_putendl_fd("Usage: execute program with digits as arguments", 2);
+	exit(1);
 }
 
-int                 main(int ac, char **av)
+void				a(int a)
 {
-	t_checker	env;
-	t_pai		oper[12];
-    size_t      lst_b[size];
-    char		*line;
-    size_t      op_nb;
+	ft_printf("%d", a);
+}
 
-	init_oper(12, &oper[12]);
-	env.disp_color = 0;
-	env.disp_stack = 0;
-	get_list(&env, ac, av);
-	if (env.disp_stack)
-		print_piles(&env, 0);
-    op_nb = 0;
+void				b(int a)
+{
+	ft_printf("%d", a);
+}
+
+void				c(void)
+{
+	void(*w[2])(int) = {&a, &b};
+
+	w[0](42);
+}
+
+static inline void	checker(size_t i, size_t list_a[i], size_t list_b[i])
+{
+	char		*line;
+	size_t		op_nb;
+
+	op_nb = 0;
+	c();
 	while (get_next_line(0, &line))
 	{
 		++op_nb;
-		do_oper(&env, 12, &oper[12]);
-		if (env.disp_stack)
-			print_piles(&env, 1);
 	}
-    if (checkIfSorted(lst_a) && !lst_b)
-    {
-        ft_printf("OK\n");
-    else
-        ft_printf("KO\n");
+	if (is_sorted_array(list_a, i) && !list_b)
+		ft_printf("OK\n");
+	else
+		ft_printf("KO\n");
+}
+
+static inline void	get_list(char **av, size_t i)
+{
+	size_t			lst_a[i];
+	size_t			lst_b[i];
+	size_t			j;
+	const size_t	size = i;
+
+	if (!size)
+		display_usage();
+	bzero(lst_a, sizeof(size_t) * size);
+	while (i-- > 1)
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (!(ft_isdigit(av[i][j]) ||
+				((j == 0) && (av[i][j] == '-' || av[i][j] == '+'))))
+				display_usage();
+			++j;
+		}
+		lst_a[i] = ft_atoi(av[i]);
+	}
+	bzero(lst_b, sizeof(size_t) * size);
+	checker(size, lst_a, lst_b);
+}
+
+int					main(int ac, char **av)
+{
+	get_list(av, ac - 1);
 }

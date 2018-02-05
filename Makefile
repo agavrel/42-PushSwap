@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/05 14:05:53 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/05 15:40:47 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,12 @@
 
 CC			=	gcc
 FLAGS		=	-Wall -Wextra -Werror
-CFLAGS		=	-I$(LIBFT_PATH)incl/ -I$(INCL) $(FLAGS)
-
 LIBFT_PATH	=	./libft/
 INCL		=	./incl/
+
+CFLAGS		=	-I$(LIBFT_PATH)incl/ -I $(INCL) $(FLAGS)
+
+
 LINKS		=	-L $(LIBFT_PATH) -lft
 
 ####### CHECKER #######
@@ -30,7 +32,6 @@ NAME_PSWAP	=	push_swap
 SRCS_PATH	=	srcs/
 
 SRCS_CHK	=	main.c \
-				debug.c \
 
 SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))
 
