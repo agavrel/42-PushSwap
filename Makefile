@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/05 15:40:47 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/05 17:34:24 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ NAME_PSWAP	=	push_swap
 SRCS_PATH	=	srcs/
 
 SRCS_CHK	=	main.c \
+				presort.c \
 
 SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))
 

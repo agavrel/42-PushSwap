@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/05 15:59:32 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/05 17:48:46 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,56 +20,122 @@ static inline int	is_sorted_array(size_t arr[], size_t n)
 	return (1);
 }
 
-static inline void	isplay_usage(void)
+static inline void	display_usage(void)
 {
 	ft_putendl_fd("Usage: execute program with digits as arguments", 2);
 	exit(1);
 }
 
-void				a(int a)
+static inline void	swap_list(size_t *arr)
 {
-	ft_printf("%d", a);
+	(void)arr;
 }
 
-void				b(int a)
+static inline void	sa(t_env *env)
 {
-	ft_printf("%d", a);
+	printf("hello");
+	swap_list(env->a->list);
 }
 
-void				c(void)
+static inline void	sb(t_env *env)
 {
-	void(*w[2])(int) = {&a, &b};
-
-	w[0](42);
+	swap_list(env->b->list);
 }
 
-static inline void	checker(size_t i, size_t list_a[i], size_t list_b[i])
+static inline void	ss(t_env *env)
+{
+	swap_list(env->a->list);
+	swap_list(env->b->list);
+}
+/*
+void				pa(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+void				pb(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+void				ra(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+void				rb(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+
+void				rr(t_env *env)
+{
+	ra(env->n, env->list_a);
+	rb(env->n, env->list_b);
+}
+
+
+void				rra(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+void				rrb(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	ft_printf("%d", n);
+}
+
+void				rrr(size_t n, size_t list_a[n], size_t list_b[n])
+{
+	rra(n, list_a, list_b);
+	rrb(n, list_a, list_b);
+}
+*/
+#define NB_INSTRU 11
+
+static inline void	checker(t_env *env)
 {
 	char		*line;
 	size_t		op_nb;
+	size_t		i;
+	static void(*op[NB_INSTRU])(t_env *) = {&sa, &sb, &ss};/*, &pa, \
+		&pb, &ra, &rb, &rr, &rra, &rrb, &rrr};*/
+	const char *command[NB_INSTRU] = {"sa", "sb", "ss"};/*, "pa", \
+		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};*/
 
 	op_nb = 0;
-	c();
 	while (get_next_line(0, &line))
 	{
+		i = 0;
+		while (i < NB_INSTRU)
+		{
+			if (ft_strequ(command[i], line))
+				op[i](env);
+			++i;
+		}
 		++op_nb;
 	}
-	if (is_sorted_array(list_a, i) && !list_b)
+	if (is_sorted_array(env->a->list, env->n) && !env->b->list)
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
 }
 
-static inline void	get_list(char **av, size_t i)
-{
-	size_t			lst_a[i];
-	size_t			lst_b[i];
-	size_t			j;
-	const size_t	size = i;
+/*
+** initialize list_a and list_b
+*/
 
-	if (!size)
+static inline void	get_lst(char **av, size_t i)
+{
+	size_t			list_a[i];
+	size_t			list_b[i];
+	size_t			j;
+	t_env			env;
+
+	if (!(env.n = i))
 		display_usage();
-	bzero(lst_a, sizeof(size_t) * size);
+	bzero(list_a, sizeof(t_lst) * env.n);
 	while (i-- > 1)
 	{
 		j = 0;
@@ -80,13 +146,16 @@ static inline void	get_list(char **av, size_t i)
 				display_usage();
 			++j;
 		}
-		lst_a[i] = ft_atoi(av[i]);
+		list_a[i] = ft_atoi(av[i]);
 	}
-	bzero(lst_b, sizeof(size_t) * size);
-	checker(size, lst_a, lst_b);
+	bzero(list_b, sizeof(size_t) * env.n);
+	env.a->list = list_a;
+	env.b->list = list_b;
+	presort(&env);
+	checker(&env);
 }
 
 int					main(int ac, char **av)
 {
-	get_list(av, ac - 1);
+	get_lst(av, ac - 1);
 }

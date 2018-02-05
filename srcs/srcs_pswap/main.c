@@ -1,9 +1,6 @@
 #include "checker.h"
 
-typedef struct  s_node {
-    size_t key;
-    int value;
-}               t_node;
+
 
 static inline void swap(void *a, void *b, size_t n)
 {

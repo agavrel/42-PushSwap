@@ -5,20 +5,22 @@
 #include <string.h>
 #include <stdlib.h>
 
-/*
-t_pai g_oper[12] =
+typedef struct  s_node {
+	size_t		key;
+	int			value;
+}               t_node;
+
+typedef struct	s_lst
 {
-		{ .key =  "sa", .f = &sa},
-		{ .key =  "sb", .f = &sb},
-		{ .key =  "ss", .f = &ss},
-		{ .key =  "pa", .f = &pa},
-		{ .key =  "pb", .f = &pb},
-		{ .key =  "ra", .f = &ra},
-		{ .key =  "rb", .f = &rb},
-		{ .key =  "rr", .f = &rr},
-		{ .key =  "rra", .f = &rra},
-		{ .key =  "rrb", .f = &rrb},
-		{ .key =  "rrr", .f = &rrr},
-		{ .key =  "@", .f = NULL}
-};
-*/
+	size_t		n;
+	size_t		*list;
+}				t_lst;
+
+typedef struct 	s_env
+{
+	size_t		n;
+	t_lst		*a;
+	t_lst		*b;
+}				t_env;
+
+void	presort(t_env *env);
