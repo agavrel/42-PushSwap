@@ -12,11 +12,14 @@
 
 #include "checker.h"
 
-static inline int	is_sorted_array(size_t arr[], size_t n)
+static inline int	is_sorted_array(t_lst *lst, size_t n)
 {
-	while (n-- > 1)
-		if (arr[n] < arr[n - 1])
+	while (--n)
+	{
+		if (lst > lst->next)
 			return (0);
+		lst = lst->next;
+	}
 	return (1);
 }
 
@@ -93,7 +96,7 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 	char		*line;
 	size_t		op_nb;
 	size_t		i;
-	static void (*op[NB_INSTRU])(t_lst*, t_lst*) = {&sa, &sb, &ss};/*, &pa, \
+	static void (*op[NB_INSTRU])(t_lst**, t_lst**) = {&sa, &sb, &ss};/*, &pa, \
 		&pb, &ra, &rb, &rr, &rra, &rrb, &rrr};*/
 	static const char *command[NB_INSTRU] = {"sa", "sb", "ss"};/*, "pa", \
 		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};*/
@@ -107,14 +110,14 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 		{
 			if (*line && !ft_strcmp(command[i], line))
 			{
-				op[i++](a, b);
+				op[i++](&a, &b);
 				++op_nb;
 				break;
 			}
 			++i;
 		}
 	}
-	if (!b->n && is_sorted_array(a->list, n))
+	if (!b && is_sorted_array(a, n))
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");

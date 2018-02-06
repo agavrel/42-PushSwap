@@ -21,7 +21,7 @@ void		buffer(t_printf *p, void *new, size_t size)
 	while (PF_BUF_SIZE - p->buffer_index < (int)size)
 	{
 		diff = PF_BUF_SIZE - p->buffer_index;
-		ft_memcpy(&(p->buff[p->buffer_index]), &(new[new_i]), diff);
+		ft_memcpy(&(p->buff[p->buffer_index]), new + new_i, diff);
 		size -= diff;
 		new_i += diff;
 		p->buffer_index += diff;
@@ -29,7 +29,7 @@ void		buffer(t_printf *p, void *new, size_t size)
 		write(p->fd, p->buff, p->buffer_index);
 		p->buffer_index = 0;
 	}
-	ft_memcpy(&(p->buff[p->buffer_index]), &(new[new_i]), size);
+	ft_memcpy(&(p->buff[p->buffer_index]), new + new_i, size);
 	p->buffer_index += size;
 	p->len += size;
 }

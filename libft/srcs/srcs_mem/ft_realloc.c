@@ -15,13 +15,10 @@
 char		*ft_realloc(char *str, size_t size)
 {
 	char	*ret;
-	size_t	i;
 
 	if (str == NULL || size <= 0)
 		return (NULL);
-	i = 0;
-	ret = NULL;
-	if ((ret = malloc(size)) == NULL)
+	if (!(ret = malloc(size)))
 		return (NULL);
 	ft_strncpy(ret, str, size);
 	free(str);

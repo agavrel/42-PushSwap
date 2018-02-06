@@ -24,7 +24,7 @@ static void	pf_putwchar(t_printf *p, unsigned int wc, int wlen, int nb_bytes)
 {
 	char	tmp[4];
 
-	if (nb_bytes <= wlen && nb_bytes <= MB_CUR_MAX)
+	if (nb_bytes <= wlen && nb_bytes <= (int)MB_CUR_MAX)
 	{
 		if (nb_bytes == 1)
 			tmp[0] = wc;
