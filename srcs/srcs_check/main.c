@@ -16,7 +16,7 @@ static inline int	is_sorted_array(t_lst *lst, size_t n)
 {
 	while (--n)
 	{
-		if (lst > lst->next)
+		if (lst.value > lst->next.value)
 			return (0);
 		lst = lst->next;
 	}
@@ -128,18 +128,22 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 ** then ensure there is no duplicate in list_a
 */
 
-static inline void	check_duplicate(size_t n, size_t list_a[n])
+static inline void	check_duplicate(size_t n, t_lst lst)
 {
+	t_lst	tmp;
 	size_t	i;
-	size_t	j;
 
 	i = 0;
-	while (i < n)
+	while (n--)
 	{
-		j = -1;
-		while (++j < n)
-			if (list_a[i] == list_a[j] && j != i)
+		i = n;
+		tmp = lst.value;
+		while (i--)
+		{
+			lst = lst->next;
+			if (tmp == lst.value)
 				display_usage();
+		}
 		++i;
 	}
 }
@@ -149,9 +153,9 @@ static inline t_lst	lst_create(int value)
 {
 	t_lst	lst;
 
-	lst->value = value;
+	lst.value = value;
 	lst->next = NULL;
-	lst->previous = null;
+	lst->prev = NULL;
 }
 
 // a revoir
@@ -160,8 +164,8 @@ static inline void	lst_add(t_lst *lst, int value)
 	t_lst	tmp;
 
 	tmp = lst_create();
-	lst->previous->next = tmp;
-	lst->previous = tmp;
+	lst->prev->next = tmp;
+	lst->prev = tmp;
 }
 
 static inline void	get_lst(char **av, size_t i)
@@ -171,9 +175,9 @@ static inline void	get_lst(char **av, size_t i)
 	t_lst			b;
 	size_t			n;
 
-	if (!(a = ft_malloc(i * sizeof(t_lst))) \
-			|| !(b = ft_malloc(i * sizeof(t_lst))))
-		return (NULL);
+	if (!(a = (t_lst)malloc(i * sizeof(t_lst))) \
+			|| !(b = (t_lst)malloc(i * sizeof(t_lst))))
+		return ;
 	if (!(n = i))
 		display_usage();
 	i = 0;
@@ -187,19 +191,18 @@ static inline void	get_lst(char **av, size_t i)
 				display_usage();
 			++j;
 		}
-		lst_add(&a, ft_atoi(av[i]))
+		lst_add(&a, ft_atoi(av[i]));
 	}
-	//while(i < a.n)
+	//while(i < n)
 	//	ft_printf("%zu\n", list_a[i++]);
-	check_duplicate(a.n, list_a);
-	a.list = list_a;
-	b = a;
+	check_duplicate(n, a);
 	ft_bzero(&b, sizeof(b));
-	presort(list_a, a.n);
-	checker(&a, &b, a.n);
+	presort(&a, n);
+	checker(&a, &b, n);
 }
 
 int					main(int ac, char **av)
 {
 	get_lst(av, ac - 1);
+	return (0);
 }

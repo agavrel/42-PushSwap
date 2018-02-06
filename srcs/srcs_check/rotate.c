@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "checker.h"
+
 static inline void	rotate(t_lst **this)
 {
 	if ((*this)->next)

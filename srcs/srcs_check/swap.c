@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "checker.h"
+
 static inline void swap(void *a, void *b, size_t n)
 {
     unsigned char t[n];

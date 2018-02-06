@@ -10,10 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "checker.h"
+
 static inline void	rev_rotate(t_lst **this)
 {
-	if ((*this)->previous)
-		*this = (*this)->previous;
+	if ((*this)->prev)
+		*this = (*this)->prev;
 }
 
 inline void			rra(t_lst **a, t_lst **b)

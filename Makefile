@@ -34,6 +34,7 @@ SRCS_PATH	=	srcs/
 SRCS_CHK	=	main.c \
 				presort.c \
 				rotate.c \
+				rev_rorate.c \
 				swap.c \
 
 SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))

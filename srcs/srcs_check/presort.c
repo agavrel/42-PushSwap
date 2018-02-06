@@ -93,7 +93,7 @@ static inline void quickSortIterative (t_node arr[], int left, int right)
     }
 }
 
-void	presort(size_t *list, size_t n)
+void	presort(t_lst *list, size_t n)
 {
 	size_t	i;
 	t_node	node[n];
@@ -103,8 +103,9 @@ void	presort(size_t *list, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		node[i].value = list[i];
+		node[i].value = list.value;
 		node[i].key = i;
+		list = list->next;
 		++i;
 	}
 	if (n < 1000)
