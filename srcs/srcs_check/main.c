@@ -16,80 +16,18 @@ static inline int	is_sorted_array(t_lst *lst, size_t n)
 {
 	while (--n)
 	{
-		if (lst.value > lst->next.value)
+		if (lst->value > lst->next->value)
 			return (0);
 		lst = lst->next;
 	}
 	return (1);
 }
 
-
-
 static inline void	display_usage(void)
 {
 	ft_putendl_fd("Usage: execute program with digits as arguments", 2);
 	exit(1);
 }
-
-
-/*
-void				pa(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	// envoie la valeur vers b
-	ft_memcpy(a, n - 1)
-	ft_printf("%d", n);
-}
-
-void				pb(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	ft_printf("%d", n);
-}
-
-
-** rotate array UP
-
-
-static inline void	rotate_list_up(t_lst *this)
-{
-	if (this->n > 1)
-		swap(this->list, this->list + 1, sizeof(size_t));
-}
-
-void				ra(t_lst *a, t_lst *b)
-{
-	rotate_list_up(a);
-}
-
-void				rb(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	ft_printf("%d", n);
-}
-
-
-void				rr(t_env *env)
-{
-	ra(env->n, env->list_a);
-	rb(env->n, env->list_b);
-}
-
-
-void				rra(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	ft_printf("%d", n);
-}
-
-void				rrb(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	ft_printf("%d", n);
-}
-
-void				rrr(size_t n, size_t list_a[n], size_t list_b[n])
-{
-	rra(n, list_a, list_b);
-	rrb(n, list_a, list_b);
-}
-*/
-#define NB_INSTRU 11
 
 static inline void	checker(t_lst *a, t_lst *b, size_t n)
 {
@@ -128,55 +66,66 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 ** then ensure there is no duplicate in list_a
 */
 
-static inline void	check_duplicate(size_t n, t_lst lst)
+static inline void	check_duplicate(size_t n, t_lst *lst)
 {
-	t_lst	tmp;
+	t_lst	*tmp;
 	size_t	i;
 
 	i = 0;
 	while (n--)
 	{
 		i = n;
-		tmp = lst.value;
+		tmp = lst;
 		while (i--)
 		{
-			lst = lst->next;
-			if (tmp == lst.value)
+			tmp = tmp->next;
+			if (lst->value == tmp->value)
 				display_usage();
 		}
-		++i;
+		lst = lst->next;
 	}
 }
 
 
-static inline t_lst	lst_create(int value)
+static inline *t_lst	lst_create(int value)
 {
-	t_lst	lst;
+	t_lst	*lst;
 
-	lst.value = value;
+	lst->value = value;
 	lst->next = NULL;
 	lst->prev = NULL;
+	return (lst);
 }
 
-// a revoir
+/*
+** create an empty node
+** The node after the one that was the last is the newly created node
+** The node after the newly created is the first one
+** The node before the newly created is the former last one
+** The node before the first is the newly created one
+*/
+
 static inline void	lst_add(t_lst *lst, int value)
 {
-	t_lst	tmp;
+	t_lst	*tmp;
 
-	tmp = lst_create();
+	tmp = lst_create(value);
 	lst->prev->next = tmp;
+	tmp->next = lst;
+	tmp->prev = lst->prev;
 	lst->prev = tmp;
+
 }
 
 static inline void	get_lst(char **av, size_t i)
 {
 	size_t			j;
-	t_lst			a;
-	t_lst			b;
+	t_lst			*a;
+	t_lst			*b;
 	size_t			n;
 
-	if (!(a = (t_lst)malloc(i * sizeof(t_lst))) \
-			|| !(b = (t_lst)malloc(i * sizeof(t_lst))))
+	if (!(a = malloc(i * sizeof(t_lst))) \
+			|| !(b = malloc(i * sizeof(t_lst))))
 		return ;
 	if (!(n = i))
 		display_usage();
@@ -191,14 +140,14 @@ static inline void	get_lst(char **av, size_t i)
 				display_usage();
 			++j;
 		}
-		lst_add(&a, ft_atoi(av[i]));
+		lst_add(a, ft_atoi(av[i]));
 	}
 	//while(i < n)
 	//	ft_printf("%zu\n", list_a[i++]);
 	check_duplicate(n, a);
 	ft_bzero(&b, sizeof(b));
-	presort(&a, n);
-	checker(&a, &b, n);
+	presort(a, n);
+	checker(a, b, n);
 }
 
 int					main(int ac, char **av)

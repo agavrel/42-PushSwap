@@ -5,17 +5,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define NB_INSTRU 11
+
 typedef struct  s_node {
 	size_t		key;
 	int			value;
 }               t_node;
 
-typedef struct	s_lst
+typedef struct		s_lst
 {
-	size_t		value;
-	void		*prev;
-	void		*next;
-}				t_lst;
+	size_t			value;
+	struct t_lst	*prev;
+	struct t_lst	*next;
+}					t_lst;
 
 void		presort(t_lst *list, size_t n);
 
