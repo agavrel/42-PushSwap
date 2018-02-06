@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/05 17:48:46 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/06 18:36:30 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,20 @@ static inline int	is_sorted_array(size_t arr[], size_t n)
 	return (1);
 }
 
+
+
 static inline void	display_usage(void)
 {
 	ft_putendl_fd("Usage: execute program with digits as arguments", 2);
 	exit(1);
 }
 
-static inline void	swap_list(size_t *arr)
-{
-	(void)arr;
-}
 
-static inline void	sa(t_env *env)
-{
-	printf("hello");
-	swap_list(env->a->list);
-}
-
-static inline void	sb(t_env *env)
-{
-	swap_list(env->b->list);
-}
-
-static inline void	ss(t_env *env)
-{
-	swap_list(env->a->list);
-	swap_list(env->b->list);
-}
 /*
 void				pa(size_t n, size_t list_a[n], size_t list_b[n])
 {
+	// envoie la valeur vers b
+	ft_memcpy(a, n - 1)
 	ft_printf("%d", n);
 }
 
@@ -58,9 +42,19 @@ void				pb(size_t n, size_t list_a[n], size_t list_b[n])
 	ft_printf("%d", n);
 }
 
-void				ra(size_t n, size_t list_a[n], size_t list_b[n])
+
+** rotate array UP
+
+
+static inline void	rotate_list_up(t_lst *this)
 {
-	ft_printf("%d", n);
+	if (this->n > 1)
+		swap(this->list, this->list + 1, sizeof(size_t));
+}
+
+void				ra(t_lst *a, t_lst *b)
+{
+	rotate_list_up(a);
 }
 
 void				rb(size_t n, size_t list_a[n], size_t list_b[n])
@@ -94,29 +88,33 @@ void				rrr(size_t n, size_t list_a[n], size_t list_b[n])
 */
 #define NB_INSTRU 11
 
-static inline void	checker(t_env *env)
+static inline void	checker(t_lst *a, t_lst *b, size_t n)
 {
 	char		*line;
 	size_t		op_nb;
 	size_t		i;
-	static void(*op[NB_INSTRU])(t_env *) = {&sa, &sb, &ss};/*, &pa, \
+	static void (*op[NB_INSTRU])(t_lst*, t_lst*) = {&sa, &sb, &ss};/*, &pa, \
 		&pb, &ra, &rb, &rr, &rra, &rrb, &rrr};*/
-	const char *command[NB_INSTRU] = {"sa", "sb", "ss"};/*, "pa", \
+	static const char *command[NB_INSTRU] = {"sa", "sb", "ss"};/*, "pa", \
 		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};*/
 
 	op_nb = 0;
-	while (get_next_line(0, &line))
+	ft_printf("_______________________________\n");
+	while (get_next_line(0, &line) > 0)
 	{
 		i = 0;
-		while (i < NB_INSTRU)
+		while (i < 3)//NB_INSTRU)
 		{
-			if (ft_strequ(command[i], line))
-				op[i](env);
+			if (*line && !ft_strcmp(command[i], line))
+			{
+				op[i++](a, b);
+				++op_nb;
+				break;
+			}
 			++i;
 		}
-		++op_nb;
 	}
-	if (is_sorted_array(env->a->list, env->n) && !env->b->list)
+	if (!b->n && is_sorted_array(a->list, n))
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
@@ -124,35 +122,78 @@ static inline void	checker(t_env *env)
 
 /*
 ** initialize list_a and list_b
+** then ensure there is no duplicate in list_a
 */
+
+static inline void	check_duplicate(size_t n, size_t list_a[n])
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i < n)
+	{
+		j = -1;
+		while (++j < n)
+			if (list_a[i] == list_a[j] && j != i)
+				display_usage();
+		++i;
+	}
+}
+
+
+static inline t_lst	lst_create(int value)
+{
+	t_lst	lst;
+
+	lst->value = value;
+	lst->next = NULL;
+	lst->previous = null;
+}
+
+// a revoir
+static inline void	lst_add(t_lst *lst, int value)
+{
+	t_lst	tmp;
+
+	tmp = lst_create();
+	lst->previous->next = tmp;
+	lst->previous = tmp;
+}
 
 static inline void	get_lst(char **av, size_t i)
 {
-	size_t			list_a[i];
-	size_t			list_b[i];
 	size_t			j;
-	t_env			env;
+	t_lst			a;
+	t_lst			b;
+	size_t			n;
 
-	if (!(env.n = i))
+	if (!(a = ft_malloc(i * sizeof(t_lst))) \
+			|| !(b = ft_malloc(i * sizeof(t_lst))))
+		return (NULL);
+	if (!(n = i))
 		display_usage();
-	bzero(list_a, sizeof(t_lst) * env.n);
-	while (i-- > 1)
+	i = 0;
+	while (++i <= n)
 	{
 		j = 0;
 		while (av[i][j])
 		{
 			if (!(ft_isdigit(av[i][j]) ||
-				((j == 0) && (av[i][j] == '-' || av[i][j] == '+'))))
+				((j == 0) && (*av[i] == '-' || *av[i] == '+'))))
 				display_usage();
 			++j;
 		}
-		list_a[i] = ft_atoi(av[i]);
+		lst_add(&a, ft_atoi(av[i]))
 	}
-	bzero(list_b, sizeof(size_t) * env.n);
-	env.a->list = list_a;
-	env.b->list = list_b;
-	presort(&env);
-	checker(&env);
+	//while(i < a.n)
+	//	ft_printf("%zu\n", list_a[i++]);
+	check_duplicate(a.n, list_a);
+	a.list = list_a;
+	b = a;
+	ft_bzero(&b, sizeof(b));
+	presort(list_a, a.n);
+	checker(&a, &b, a.n);
 }
 
 int					main(int ac, char **av)

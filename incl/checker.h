@@ -12,15 +12,21 @@ typedef struct  s_node {
 
 typedef struct	s_lst
 {
-	size_t		n;
-	size_t		*list;
+	size_t		*value;
+	void		*prev;
+	void		*next;
 }				t_lst;
 
-typedef struct 	s_env
-{
-	size_t		n;
-	t_lst		*a;
-	t_lst		*b;
-}				t_env;
+void		presort(t_lst *list, size_t n);
 
-void	presort(t_env *env);
+inline void	sa(t_lst **a, t_lst **b);
+inline void	sb(t_lst **a, t_lst **b);
+inline void	ss(t_lst **a, t_lst **b);
+inline void	ra(t_lst **a, t_lst **b);
+inline void	rb(t_lst **a, t_lst **b);
+inline void	rr(t_lst **a, t_lst **b);
+inline void	rra(t_lst **a, t_lst **b);
+inline void	rrb(t_lst **a, t_lst **b);
+inline void	rrr(t_lst **a, t_lst **b);
+inline void	pa(t_lst **a, t_lst **b);
+inline void	pb(t_lst **a, t_lst **b);

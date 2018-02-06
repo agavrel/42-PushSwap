@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:31:14 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/05 17:48:46 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/06 15:40:23 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,32 +93,32 @@ static inline void quickSortIterative (t_node arr[], int left, int right)
     }
 }
 
-void	presort(t_env *env)
+void	presort(size_t *list, size_t n)
 {
 	size_t	i;
-	t_node	node[env->n];
+	t_node	node[n];
 	//size_t  sortedNode[env->n];
 
 	/* set original index for each element of the array */
 	i = 0;
-	while (i < env->n)
+	while (i < n)
 	{
-		node[i].value = env->a->list[i];
+		node[i].value = list[i];
 		node[i].key = i;
 		++i;
 	}
-	if (env->n < 1000)
-		shellSort(node, env->n);
+	if (n < 1000)
+		shellSort(node, n);
 	else
-		quickSortIterative(node, 0, env->n - 1);
+		quickSortIterative(node, 0, n - 1);
 
 	/* displaying result */
 	i = 0;
-	while (i < env->n)
+	while (i < n)
 	{
 		printf("desired index: %zu ", i);
 		printf("original index : %zu, value : %d\n", node[i].key, node[i].value);
-		env->a->list[node[i].key] = i;
+		list[node[i].key] = i;
 		++i;
 	}
 }
