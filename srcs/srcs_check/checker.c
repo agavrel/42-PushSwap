@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 19:09:40 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 21:14:23 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	n = 0;
 	while (a)
 	{
-		ft_printf("[%zu] : %zu\n", n, a->value);
+		ft_printf("[%zu] : %zu\n", n++, a->value);
 		a = a->next;
-		if (a->next == tmp_a)
+		if (a == tmp_a)
 			break;
 	}
 	ft_printf("------ List B ------\n");
 	n = 0;
 	while (b)
 	{
-		ft_printf("[%zu] : %zu\n", n, b->value);
+		ft_printf("[%zu] : %zu\n", n++, b->value);
 		b = b->next;
 		if (b == tmp_b)
 			break;

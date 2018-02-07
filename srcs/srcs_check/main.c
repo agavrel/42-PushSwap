@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 19:01:03 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 19:33:10 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static inline t_lst *lst_new(size_t n)
 
 	lst = lst_create();
 	tmp = lst;
-	while (n--)
+	while (--n)
 	{
 		lst->next = lst_create();
 		lst->next->prev = lst;
