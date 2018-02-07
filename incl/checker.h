@@ -20,6 +20,8 @@ typedef struct		s_lst
 }					t_lst;
 
 void		presort(t_lst *list, size_t n, int unsorted_list[n]);
+void		error_handler(size_t i);
+void		checker(t_lst *a, t_lst *b, size_t n);
 
 void		ss(t_lst **a, t_lst **b);
 void		ra(t_lst **a, t_lst **b);

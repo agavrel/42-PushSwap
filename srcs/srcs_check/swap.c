@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 18:10:37 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 16:08:00 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 18:59:19 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static inline void swap(void *a, void *b, size_t n)
     memcpy(b, t, n);
 }
 */
-inline void			swap_list(t_lst **this)
+static inline void	swap_list(t_lst **this)
 {
 	t_lst	*tmp;
 
@@ -36,18 +36,22 @@ inline void			swap_list(t_lst **this)
 
 inline void			sa(t_lst **a, t_lst **b)
 {
-	swap_list(a);
+	if (*a)
+		swap_list(a);
 	(void)b;
 }
 
 inline void			sb(t_lst **a, t_lst **b)
 {
 	(void)a;
-	swap_list(b);
+	if (*b)
+		swap_list(b);
 }
 
 inline void			ss(t_lst **a, t_lst **b)
 {
-	swap_list(a);
-	swap_list(b);
+	if (*a)
+		swap_list(a);
+	if (*b)
+		swap_list(b);
 }
