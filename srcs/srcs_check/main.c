@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 19:33:10 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 22:44:45 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 inline void			error_handler(size_t i)
 {
-	char	*error_message[4] = \
+	const static char	*error_message[4] = \
 		{"Usage: execute program with digits as arguments", \
 		"Failed to malloc, perhaps you should have used VLAs",
 		"Duplicate Values are forbidden",

@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:49:06 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 22:31:19 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 23:01:06 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ static inline void  push_to_from(t_lst **to, t_lst **from)
 {
 	t_lst	*tmp;
 
-	if (*from == NULL)
-		return ;
 	if (!*to)
 	{
 		*to = *from;
@@ -31,24 +29,26 @@ static inline void  push_to_from(t_lst **to, t_lst **from)
 		*to = *from;
 	}
 	tmp = *from;
-	from = (*from == (*from)->next) ? NULL : &(*from)->next;
-	if (from)
+	*from = (*from == (*from)->next) ? NULL : (*from)->next;
+	ft_putstr("a");
+	if (*from)
 	{
-		(*from)->prev = tmp;
-		(*from)->prev->next = tmp->next;
-		(*from)->next->prev = tmp->prev;
+		(*from)->prev = tmp->prev;
+			ft_putstr("a");
+		(*from)->prev->next = *from;
 	}
-	to = &(*to);
 }
 
 inline void			pa(t_lst **a, t_lst **b)
 {
-	push_to_from(a, b);
+	if (*b)
+		push_to_from(a, b);
 }
 
 inline void			pb(t_lst **a, t_lst **b)
 {
-	push_to_from(b, a);
+	if (*a)
+		push_to_from(b, a);
 }
 
 /*
