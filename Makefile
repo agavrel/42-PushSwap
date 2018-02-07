@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/06 17:51:12 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/07 16:08:24 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,9 @@ SRCS_PATH	=	srcs/
 SRCS_CHK	=	main.c \
 				presort.c \
 				rotate.c \
-				rev_rorate.c \
+				rev_rotate.c \
 				swap.c \
+				push.c
 
 SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))
 

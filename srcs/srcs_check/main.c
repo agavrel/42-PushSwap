@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/06 18:36:30 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 16:10:59 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@ static inline int	is_sorted_array(t_lst *lst, size_t n)
 	return (1);
 }
 
-static inline void	display_usage(void)
+static inline void	error_handler(size_t i)
 {
-	ft_putendl_fd("Usage: execute program with digits as arguments", 2);
+	char	*error_message[4] = \
+		{"Usage: execute program with digits as arguments", \
+		"Failed to malloc, perhaps you should have used VLAs",
+		"Duplicate Values are forbidden",
+		"Please enter valid digits i.e : -5, 15, 0..."};
+	ft_putendl_fd(error_message[i], 2);
 	exit(1);
 }
 
@@ -34,17 +39,17 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 	char		*line;
 	size_t		op_nb;
 	size_t		i;
-	static void (*op[NB_INSTRU])(t_lst**, t_lst**) = {&sa, &sb, &ss};/*, &pa, \
-		&pb, &ra, &rb, &rr, &rra, &rrb, &rrr};*/
-	static const char *command[NB_INSTRU] = {"sa", "sb", "ss"};/*, "pa", \
-		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};*/
+	static void (*op[NB_INSTRU])(t_lst**, t_lst**) = {&sa, &sb, &ss, &pa, \
+		&pb, &ra, &rb, &rr, &rra, &rrb, &rrr};
+	static const char *command[NB_INSTRU] = {"sa", "sb", "ss", "pa", \
+		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};
 
 	op_nb = 0;
 	ft_printf("_______________________________\n");
 	while (get_next_line(0, &line) > 0)
 	{
 		i = 0;
-		while (i < 3)//NB_INSTRU)
+		while (i < NB_INSTRU)
 		{
 			if (*line && !ft_strcmp(command[i], line))
 			{
@@ -66,31 +71,29 @@ static inline void	checker(t_lst *a, t_lst *b, size_t n)
 ** then ensure there is no duplicate in list_a
 */
 
-static inline void	check_duplicate(size_t n, t_lst *lst)
+static inline void	check_duplicate(size_t n, int lst[n])
 {
-	t_lst	*tmp;
+	int		tmp;
 	size_t	i;
 
 	i = 0;
 	while (n--)
 	{
 		i = n;
-		tmp = lst;
+		tmp = lst[i];
 		while (i--)
-		{
-			tmp = tmp->next;
-			if (lst->value == tmp->value)
-				display_usage();
-		}
-		lst = lst->next;
+			if (lst[i] == tmp)
+				error_handler(2);
 	}
 }
 
 
-static inline *t_lst	lst_create(int value)
+static inline t_lst	*lst_create(int value)
 {
 	t_lst	*lst;
 
+	if (!(lst = malloc(sizeof(t_lst))))
+		error_handler(1);
 	lst->value = value;
 	lst->next = NULL;
 	lst->prev = NULL;
@@ -119,16 +122,17 @@ static inline void	lst_add(t_lst *lst, int value)
 
 static inline void	get_lst(char **av, size_t i)
 {
-	size_t			j;
 	t_lst			*a;
 	t_lst			*b;
 	size_t			n;
+	size_t			j;
+	int				list[i];
 
 	if (!(a = malloc(i * sizeof(t_lst))) \
 			|| !(b = malloc(i * sizeof(t_lst))))
-		return ;
+		error_handler(1);
 	if (!(n = i))
-		display_usage();
+		error_handler(0);
 	i = 0;
 	while (++i <= n)
 	{
@@ -137,16 +141,19 @@ static inline void	get_lst(char **av, size_t i)
 		{
 			if (!(ft_isdigit(av[i][j]) ||
 				((j == 0) && (*av[i] == '-' || *av[i] == '+'))))
-				display_usage();
+				error_handler(3);
 			++j;
 		}
-		lst_add(a, ft_atoi(av[i]));
+		list[i - 1] = ft_atoi(av[i]);
 	}
+	i = 0;
+	while (i < n)
+		lst_add(a, list[i++]);
 	//while(i < n)
 	//	ft_printf("%zu\n", list_a[i++]);
-	check_duplicate(n, a);
+	check_duplicate(n, list);
 	ft_bzero(&b, sizeof(b));
-	presort(a, n);
+	presort(a, n, list);
 	checker(a, b, n);
 }
 

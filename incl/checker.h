@@ -15,11 +15,11 @@ typedef struct  s_node {
 typedef struct		s_lst
 {
 	size_t			value;
-	struct t_lst	*prev;
-	struct t_lst	*next;
+	struct s_lst	*prev;
+	struct s_lst	*next;
 }					t_lst;
 
-void		presort(t_lst *list, size_t n);
+void		presort(t_lst *list, size_t n, int unsorted_list[n]);
 
 void		ss(t_lst **a, t_lst **b);
 void		ra(t_lst **a, t_lst **b);

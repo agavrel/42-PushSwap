@@ -6,12 +6,12 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 18:10:37 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/06 18:10:39 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 16:08:00 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
-
+/*
 static inline void swap(void *a, void *b, size_t n)
 {
     unsigned char t[n];
@@ -20,7 +20,7 @@ static inline void swap(void *a, void *b, size_t n)
     memcpy(a, b, n);
     memcpy(b, t, n);
 }
-
+*/
 inline void			swap_list(t_lst **this)
 {
 	t_lst	*tmp;

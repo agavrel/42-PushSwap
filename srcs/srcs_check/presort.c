@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:31:14 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/06 15:40:23 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/07 16:06:38 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,23 @@ static inline void quickSortIterative (t_node arr[], int left, int right)
     }
 }
 
-void	presort(t_lst *list, size_t n)
+/*
+** first loop set original index for each element of the array
+** then will sort array depending on n's value.
+** finally attribute the correct index.
+*/
+
+void	presort(t_lst *list, size_t n, int unsorted_list[n])
 {
 	size_t	i;
 	t_node	node[n];
-	//size_t  sortedNode[env->n];
 
-	/* set original index for each element of the array */
+
 	i = 0;
 	while (i < n)
 	{
-		node[i].value = list.value;
+		node[i].value = unsorted_list[i];
 		node[i].key = i;
-		list = list->next;
 		++i;
 	}
 	if (n < 1000)
@@ -115,11 +119,16 @@ void	presort(t_lst *list, size_t n)
 
 	/* displaying result */
 	i = 0;
-	while (i < n)
+	while (n--)
 	{
-		printf("desired index: %zu ", i);
-		printf("original index : %zu, value : %d\n", node[i].key, node[i].value);
-		list[node[i].key] = i;
-		++i;
+		ft_printf("desired index: %zu ", n);
+		ft_printf("original index : %zu, value : %d\n", node[n].key, node[n].value);
+		i = node[n].key;
+		while (i--)
+		{
+			list = list->next;
+
+		}
+		list->value = n;
 	}
 }
