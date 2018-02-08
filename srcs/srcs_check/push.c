@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:49:06 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 23:01:06 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 14:25:33 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,30 @@ static inline void  push_to_from(t_lst **to, t_lst **from)
 		*to = *from;
 	}
 	tmp = *from;
-	*from = (*from == (*from)->next) ? NULL : (*from)->next;
-	ft_putstr("a");
+	*from = (*from)->next;
 	if (*from)
 	{
 		(*from)->prev = tmp->prev;
-			ft_putstr("a");
 		(*from)->prev->next = *from;
+
+		(*from)->next->prev = *from;
 	}
 }
+
+/*
+t_lst	*tmp;
+
+if ((*this)->next)
+{
+	tmp = *this;
+	*this = (*this)->next;
+	tmp->next = (*this)->next;
+	tmp->next->prev = tmp;
+	(*this)->prev = tmp->prev;
+	tmp->prev = *this;
+	(*this)->next = tmp;
+	(*this)->prev->next = *this;
+}*/
 
 inline void			pa(t_lst **a, t_lst **b)
 {

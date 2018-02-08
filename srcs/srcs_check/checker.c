@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 21:14:23 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 12:03:35 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	n = 0;
 	while (a)
 	{
+		ft_printf("%p, %p\n", (void*)a, (void*)tmp_a);
 		ft_printf("[%zu] : %zu\n", n++, a->value);
 		a = a->next;
 		if (a == tmp_a)

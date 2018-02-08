@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 18:10:37 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 22:44:28 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 14:21:26 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,27 @@ static inline void swap(void *a, void *b, size_t n)
     memcpy(b, t, n);
 }
 */
+
 /*
 ** Swap the following way:
-** 2nd element takes address of first element
-** 1st element takes address of second element
-**
-**
+** 2nd element takes address of first element and its links to last and 1st;
+** 1st element takes address of second element and its links to 2nd and next;
 */
+
 static inline void	swap_list(t_lst **this)
 {
-	t_lst	*memory_addresses[4];
+	t_lst	*tmp;
 
 	if ((*this)->next)
 	{
-		memory_addresses[0] = (*this)->prev;
-		memory_addresses[1] = *this;
-		memory_addresses[2] = ((*this)->next);
-		memory_addresses[3] = (*this)->next->next;
-
-		*this = memory_addresses[2];
-		(*this)->next = memory_addresses[1];
-		(*this)->prev = memory_addresses[0];
-		(*this)->prev->next = memory_addresses[2];
-		(*this)->next->next = memory_addresses[3];
-		(*this)->next->prev = memory_addresses[2];
+		tmp = *this;
+		*this = (*this)->next;
+		tmp->next = (*this)->next;
+		tmp->next->prev = tmp;
+		(*this)->prev = tmp->prev;
+		tmp->prev = *this;
+		(*this)->next = tmp;
+		(*this)->prev->next = *this;
 	}
 }
 
