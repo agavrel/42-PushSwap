@@ -6,57 +6,56 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:49:06 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/08 15:57:07 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 19:52:06 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "pushswap.h"
 
 /*
 ** clean links from the popped item
 */
 
-static inline t_lst	*pop(t_lst **this)
+static inline t_lst	*pop(t_lst **lst)
 {
 	t_lst	*tmp;
 
-	tmp = *this;
-	if ((*this)->next == *this)
-		*this = NULL;
+	tmp = *lst;
+	if ((*lst)->next == *lst)
+		*lst = NULL;
 	else
 	{
-		(*this)->prev->next = (*this)->next;
-		(*this)->next->prev = (*this)->prev;
-		*this = (*this)->next;
+		(*lst)->prev->next = (*lst)->next;
+		(*lst)->next->prev = (*lst)->prev;
+		*lst = (*lst)->next;
 	}
 	tmp->prev = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }
 
-static inline void	push(t_lst **this, t_lst *item)
+static inline void	push(t_lst **lst, t_lst *item)
 {
-	if (*this == NULL)
+	if (*lst == NULL)
 	{
 		item->prev = item;
 		item->next = item;
 	}
 	else
 	{
-		item->prev = (*this)->prev;
-		item->next = (*this);
-		(*this)->prev->next = item;
-		(*this)->prev = item;
+		item->prev = (*lst)->prev;
+		item->next = (*lst);
+		(*lst)->prev->next = item;
+		(*lst)->prev = item;
 	}
-	*this = item;
+	*lst = item;
 }
 
 static inline void  push_from_to(t_lst **from, t_lst **to)
 {
 	t_lst	*item;
 
-	item = pop(from);
-	if (item)
+	if ((item = pop(from)))
 		push(to, item);
 }
 

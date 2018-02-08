@@ -6,16 +6,16 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 18:09:34 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/07 22:34:13 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 19:52:08 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "pushswap.h"
 
-static inline void	rev_rotate(t_lst **this)
+static inline void	rev_rotate(t_lst **lst)
 {
-	if ((*this)->prev)
-		*this = (*this)->prev;
+	if ((*lst)->prev)
+		*lst = (*lst)->prev;
 }
 
 inline void			rra(t_lst **a, t_lst **b)

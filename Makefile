@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/07 18:56:01 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/08 23:05:26 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,15 @@ SRCS_CHK	=	main.c \
 SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))
 
 SRCS_PSWAP	=	main.c \
+				presort.c
 
 SRCS_PSWAP2	=	$(addprefix $(SRCS_PATH)srcs_pswap/, $(SRCS_PSWAP)) \
 
 OBJ_CHK		=	$(SRCS_CHK2:.c=.o)
 OBJ_PSWAP	=	$(SRCS_PSWAP2:.c=.o)
+
+OBJ_PATH	=	$(OBJ_PSWAP) \
+				$(OBJ_CHK)
 
 ######### RULES #######
 
@@ -57,6 +61,7 @@ $(NAME_CHK) : $(OBJ_CHK)
 
 $(NAME_PSWAP) : $(OBJ_PSWAP)
 	$(CC) -o $(NAME_PSWAP) $(OBJ_PSWAP) $(CFLAGS) $(LINKS)
+
 
 clean:
 	@/bin/rm -rf $(OBJ_PATH)

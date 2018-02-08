@@ -6,11 +6,11 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/08 12:54:46 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/08 19:52:22 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "pushswap.h"
 
 inline void			error_handler(size_t i)
 {
