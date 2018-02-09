@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 19:49:08 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 16:14:59 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 18:09:20 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void				checker(t_lst *a, t_lst *b, size_t n);
 ** Solving Algo
 */
 
-void				solver(t_lst *a, t_lst *b, size_t n);
+void				solver(t_lst **a, t_lst **b, size_t n);
 
 /*
 ** check that lst is sorted by ascending order

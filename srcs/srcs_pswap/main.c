@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:04:07 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 15:50:01 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 18:09:52 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,8 @@ static inline void	get_lst(char **av, size_t i)
 	a = lst_new(n);
 	check_duplicate(n, list);
 	ft_bzero(&b, sizeof(b));
-
 	presort(a, n, list);
-
-	solver(a, b, n);
+	solver(&a, &b, n);
 }
 
 int					main(int ac, char **av)

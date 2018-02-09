@@ -6,13 +6,13 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 15:47:39 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 17:50:35 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pushswap.h"
 
-static inline int	is_sorted_array(t_lst *lst, size_t n)
+inline int			is_sorted_array(t_lst *lst, size_t n)
 {
 	while (--n)
 	{
@@ -29,24 +29,25 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	t_lst *tmp_b = b;
 	size_t n;
 
-	ft_printf("------ List A ------\n");
+	ft_dprintf(2, "------ List A ------\n");
 	n = 0;
 	while (a)
 	{
-		ft_printf("[%zu] ------> %zu\n", n++, a->value);
+		ft_printf("[%zu]               %zu\n", n++, a->value);
 		a = a->next;
 		if (a == tmp_a)
 			break;
 	}
-	ft_printf("------ List B ------\n");
+	ft_dprintf(2, "------ List B ------\n");
 	n = 0;
 	while (b)
 	{
-		ft_printf("[%zu] ------> %zu\n", n++, b->value);
+		ft_printf("[%zu]               %zu\n", n++, b->value);
 		b = b->next;
 		if (b == tmp_b)
 			break;
 	}
+	ft_dprintf(2, "_______________________________\n");
 }
 
 inline void			checker(t_lst *a, t_lst *b, size_t n)
@@ -60,7 +61,8 @@ inline void			checker(t_lst *a, t_lst *b, size_t n)
 		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};
 
 	op_nb = 0;
-	ft_printf("_______________________________\n");
+	ft_dprintf(2, "_______________________________\n");
+	lst_display(a, b);
 	while (get_next_line(0, &line) > 0)
 	{
 		i = 0;
@@ -68,13 +70,13 @@ inline void			checker(t_lst *a, t_lst *b, size_t n)
 		{
 			if (*line && !ft_strcmp(command[i], line) && ++op_nb)
 			{
-				op[i++](&a, &b);
+				op[i](&a, &b);
+				ft_dprintf(2, "\e[1;34m%s\e[0m\n", command[i]);
+				lst_display(a, b);
 				break;
 			}
 			++i;
 		}
-		lst_display(a, b);
 	}
-
 	(!b && is_sorted_array(a, n)) ? ft_printf("OK\n") : ft_printf("KO\n");
 }
