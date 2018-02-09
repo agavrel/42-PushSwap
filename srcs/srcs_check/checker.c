@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 17:50:35 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 20:48:49 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	t_lst *tmp_b = b;
 	size_t n;
 
+	ft_dprintf(2, "_______________________________\n");
 	ft_dprintf(2, "------ List A ------\n");
 	n = 0;
 	while (a)
@@ -61,7 +62,6 @@ inline void			checker(t_lst *a, t_lst *b, size_t n)
 		"pb", "ra", "rb", "rr", "rra", "rrb", "rrr"};
 
 	op_nb = 0;
-	ft_dprintf(2, "_______________________________\n");
 	lst_display(a, b);
 	while (get_next_line(0, &line) > 0)
 	{

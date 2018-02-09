@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:20:33 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 18:56:51 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 20:56:08 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,65 @@ inline int			is_sorted_array(t_lst *lst, size_t n)
 		lst = lst->next;
 	}
 	return (1);
+}
+
+static inline void	rotate_list(t_lst **a)
+{
+	size_t	forward;
+	size_t	back;
+	t_lst	*begin;
+
+	forward = 1;
+	back = 1;
+	begin = *a;
+	while (begin->value < begin->next->value && begin->next != *a)
+	{
+		++forward;
+		begin = begin->next;
+	}
+	begin = (*a)->prev;
+	++back;
+	while (begin->value > begin->prev->value && begin != *a)
+	{
+		++back;
+		begin = begin->prev;
+	}
+	//ft_dprintf(2, "%d %d\n\n", forward, back);
+	if (forward > 1 || back > 2)
+	{
+		if (forward < back)
+		{
+			while (forward--)
+			{
+				ft_putendl("ra");
+				ra(a, NULL);
+				if ((*a)->value == (*a)->next->value + 1)
+				{
+					ft_putendl("sa");
+					sa(a, NULL);
+				}
+			}
+		}
+		else
+		{
+			while (back--)
+			{
+				ft_putendl("rra");
+				rra(a, NULL);
+				if ((*a)->value == (*a)->next->value + 1)
+				{
+					ft_putendl("sa");
+					sa(a, NULL);
+				}
+			}
+		}
+	}
+	if ((*a)->value == (*a)->next->value + 1)
+	{
+		ft_putendl("sa");
+		sa(a, NULL);
+	}
+
 }
 
 static inline void	push_tail(t_lst **a, t_lst **b, size_t forward, size_t back)
@@ -85,10 +144,16 @@ inline void			solver(t_lst **a, t_lst **b, size_t n)
 		}
 		else
 		{
-			get_direction(*a, &forward, &back, tmp);
-			push_tail(a, b, forward, back);
-			++tmp;
+			if (n > 10)
+			{
+				get_direction(*a, &forward, &back, tmp);
+				push_tail(a, b, forward, back);
+				++tmp;
+			}
+			else
+				rotate_list(a);
 		}
+		getchar();
 	}
 	while (*b)
 	{
