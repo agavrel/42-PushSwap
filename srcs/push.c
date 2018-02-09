@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:49:06 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 17:40:45 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 23:34:38 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,14 @@ static inline void  push_from_to(t_lst **from, t_lst **to)
 
 inline void			pa(t_lst **a, t_lst **b)
 {
+	ft_putendl("pa");
 	if (*b)
 		push_from_to(b, a);
 }
 
 inline void			pb(t_lst **a, t_lst **b)
 {
+	ft_putendl("pb");
 	if (*a)
 		push_from_to(a, b);
 }

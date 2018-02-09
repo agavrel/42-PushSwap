@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 19:49:08 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 18:09:20 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/11 22:25:06 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void				error_handler(size_t i);
 ** check values
 */
 
-void				checker(t_lst *a, t_lst *b, size_t n);
+void				checker(t_lst *a, t_lst *b);
 
 /*
 ** Solving Algo
@@ -70,7 +70,9 @@ void				solver(t_lst **a, t_lst **b, size_t n);
 ** check that lst is sorted by ascending order
 */
 
-int					is_sorted_array(t_lst *lst, size_t n);
+int					is_sorted_lst(t_lst *lst);
+t_lst				*lst_new(size_t n);
+void				check_duplicate(size_t n, int lst[n]);
 
 /*
 ** Instructions below, 'a' stands for list a, 'b' for list b and 's' for both

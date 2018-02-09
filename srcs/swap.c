@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 18:10:37 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 17:40:31 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 23:34:08 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static inline void	swap_list(t_lst **lst)
 
 inline void			sa(t_lst **a, t_lst **b)
 {
+	ft_putendl("sa");
 	if (*a)
 		swap_list(a);
 	(void)b;
@@ -54,6 +55,7 @@ inline void			sa(t_lst **a, t_lst **b)
 
 inline void			sb(t_lst **a, t_lst **b)
 {
+	ft_putendl("sb");
 	(void)a;
 	if (*b)
 		swap_list(b);
@@ -61,6 +63,7 @@ inline void			sb(t_lst **a, t_lst **b)
 
 inline void			ss(t_lst **a, t_lst **b)
 {
+	ft_putendl("ss");
 	if (*a)
 		swap_list(a);
 	if (*b)

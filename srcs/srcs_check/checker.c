@@ -6,22 +6,11 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/09 20:48:49 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/11 22:24:33 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pushswap.h"
-
-inline int			is_sorted_array(t_lst *lst, size_t n)
-{
-	while (--n)
-	{
-		if (lst->value > lst->next->value)
-			return (0);
-		lst = lst->next;
-	}
-	return (1);
-}
 
 static inline void	lst_display(t_lst *a, t_lst *b)
 {
@@ -34,7 +23,7 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	n = 0;
 	while (a)
 	{
-		ft_printf("[%zu]               %zu\n", n++, a->value);
+		ft_dprintf(2, "[%zu]               %zu\n", n++, a->value);
 		a = a->next;
 		if (a == tmp_a)
 			break;
@@ -43,7 +32,7 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	n = 0;
 	while (b)
 	{
-		ft_printf("[%zu]               %zu\n", n++, b->value);
+		ft_dprintf(2, "[%zu]               %zu\n", n++, b->value);
 		b = b->next;
 		if (b == tmp_b)
 			break;
@@ -51,7 +40,7 @@ static inline void	lst_display(t_lst *a, t_lst *b)
 	ft_dprintf(2, "_______________________________\n");
 }
 
-inline void			checker(t_lst *a, t_lst *b, size_t n)
+inline void			checker(t_lst *a, t_lst *b)
 {
 	char		*line;
 	size_t		op_nb;
@@ -78,5 +67,6 @@ inline void			checker(t_lst *a, t_lst *b, size_t n)
 			++i;
 		}
 	}
-	(!b && is_sorted_array(a, n)) ? ft_printf("OK\n") : ft_printf("KO\n");
+	ft_dprintf(2, "\e[1;34mNB --> %d\e[0m\n", op_nb);
+	(!b && is_sorted_lst(a)) ? ft_printf("OK\n") : ft_printf("KO\n");
 }

@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/09 16:25:18 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/11 22:22:46 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,9 @@ SRCS_BOTH	=	presort.c \
 				rotate.c \
 				rev_rotate.c \
 				swap.c \
-				push.c
+				push.c \
+				lst_utils.c \
+				misc.c
 
 SRCS_CHK	=	main.c \
 				checker.c \
