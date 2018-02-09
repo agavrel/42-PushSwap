@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 17:31:14 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/08 23:05:02 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 15:45:39 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,7 @@ void					presort(t_lst *list, size_t n, int unsorted_list[n])
 	i = 0;
 	while (n--)
 	{
-		ft_printf("value : %d, original index : %zu, desired index: %zu\n", \
-			node[n].value, node[n].key, n);
+		//ft_printf("value : %d, original index : %zu, desired index: %zu\n", node[n].value, node[n].key, n);
 		i = node[n].key;
 		tmp = list;
 		while (i-- > 0)

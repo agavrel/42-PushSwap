@@ -6,7 +6,7 @@
 #    By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/08 07:06:09 by angavrel          #+#    #+#              #
-#    Updated: 2018/02/08 23:05:26 by angavrel         ###   ########.fr        #
+#    Updated: 2018/02/09 16:25:18 by angavrel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,20 +31,23 @@ NAME_PSWAP	=	push_swap
 
 SRCS_PATH	=	srcs/
 
-SRCS_CHK	=	main.c \
-				presort.c \
-				checker.c \
+SRCS_BOTH	=	presort.c \
 				rotate.c \
 				rev_rotate.c \
 				swap.c \
 				push.c
 
-SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK))
+SRCS_CHK	=	main.c \
+				checker.c \
+
+SRCS_CHK2	=	$(addprefix $(SRCS_PATH)srcs_check/, $(SRCS_CHK)) \
+				$(addprefix $(SRCS_PATH), $(SRCS_BOTH))
 
 SRCS_PSWAP	=	main.c \
-				presort.c
+				solver.c
 
 SRCS_PSWAP2	=	$(addprefix $(SRCS_PATH)srcs_pswap/, $(SRCS_PSWAP)) \
+				$(addprefix $(SRCS_PATH), $(SRCS_BOTH))
 
 OBJ_CHK		=	$(SRCS_CHK2:.c=.o)
 OBJ_PSWAP	=	$(SRCS_PSWAP2:.c=.o)

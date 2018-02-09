@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:57:20 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/08 19:52:22 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 15:20:10 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static inline void	get_lst(char **av, size_t i)
 		while (av[i][j])
 		{
 			if (!(ft_isdigit(av[i][j]) ||
-				((j == 0) && (*av[i] == '-' || *av[i] == '+'))))
+				((j == 0) && (av[i][0] == '-' || av[i][0] == '+'))))
 				error_handler(3);
 			++j;
 		}

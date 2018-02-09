@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/08 21:25:42 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/09 15:47:39 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,15 @@ inline void			checker(t_lst *a, t_lst *b, size_t n)
 		i = 0;
 		while (i < NB_INSTRU)
 		{
-			if (*line && !ft_strcmp(command[i], line))
+			if (*line && !ft_strcmp(command[i], line) && ++op_nb)
 			{
 				op[i++](&a, &b);
-				++op_nb;
 				break;
 			}
 			++i;
 		}
 		lst_display(a, b);
 	}
-	if (!b && is_sorted_array(a, n))
-		ft_printf("OK\n");
-	else
-		ft_printf("KO\n");
+
+	(!b && is_sorted_array(a, n)) ? ft_printf("OK\n") : ft_printf("KO\n");
 }
