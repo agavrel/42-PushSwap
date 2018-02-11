@@ -1,1 +1,1 @@
-make && ARG=`ruby -e "puts (-10..10).to_a.shuffle.join(' ')"` && ./push_swap $ARG | ./checker $ARG
+make && ARG=`ruby -e "puts (-10..100).to_a.shuffle.join(' ')"` && ./push_swap $ARG | ./checker $ARG

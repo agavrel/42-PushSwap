@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:20:33 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/11 22:26:17 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/11 23:32:28 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,15 @@ static inline void analyze_list(t_lst **a, size_t n, \
 
 static inline void should_we_swap(t_lst **a, t_lst **b)
 {
-	if ((*a)->next->value < ((*a)->value))
-		(*b)->next->value < (*b)->value ? ss(a, b) : sa(a, NULL);
-	else if ((*b)->next->value < (*b)->value)
-			sb(NULL, b);
+	if (*b && (*b)->next)
+	{
+		if ((*a)->next->value < (*a)->value)
+			(*b)->next->value < (*b)->value ? ss(a, b) : sa(a, NULL);
+		else if ((*b)->next->value < (*b)->value)
+				sb(NULL, b);
+	}
+	if ((*a)->next->value < (*a)->value)
+		sa(a, NULL);
 }
 
 static inline void push_items(t_lst **a, t_lst **b, size_t nb)
@@ -242,16 +247,72 @@ static inline void	solver_medium(t_lst **a, t_lst **b, size_t n)
 
 
 /*
+static inline void	fill_b(t_lst **a, t_lst **b, size_t n)
+{
+	while (n_b < n / 2)
+	{
+		should_we_swap(a, b);
+		if ((*a)->value >= n / 2 && ++n_b)
+			pb(a, b);
+		else
+			ra(a, b);
+	}
+}
+
+static inline void	fill_a(t_lst **a, t_lst **b, size_t n)
+{
+	while (n_b > n / 4)
+	{
+		should_we_swap(a, b);
+		if ((*b)->value >= n / 4 && (*b)->value <= n / 2 && n_b--)
+			pa(a, b);
+	}
+}
+*/
+static inline void	recusive_quick_sort(t_lst **a, t_lst **b, size_t n, size_t nbegin)
+{
+	size_t		n_b;
+
+	n_b = 0;
+	if (is_sorted_lst(*a) && !*b)
+		return ;
+	while (n_b < n / 2 && n_b >= nbegin)
+	{
+		//ft_dprintf(2, "heey 2\n");
+		should_we_swap(a, b);
+	//	ft_dprintf(2, "%zu, %zu, %zu\n", (*a)->value, n / 2, n_b);
+		if ((*a)->value >= n / 2 && ++n_b)
+		{
+			pb(a, b);
+	//		ft_dprintf(2, "heey 3\n");
+		}
+
+		else
+			ra(a, b);
+	}
+	while (n_b > n / 4 && n_b < nbegin)
+	{
+		should_we_swap(a, b);
+		if ((*b)->value >= n / 4 && (*b)->value <= n / 2 && n_b--)
+			pa(a, b);
+	}
+	recusive_quick_sort(a, b, n / 2, n / 2);
+	recusive_quick_sort(a, b, n / 2, 0);
+}
+
+/*
 ** quicksort
 */
 
 static inline void	solver_large(t_lst **a, t_lst **b, size_t n)
 {
-	while (!is_sorted_lst(*a))
-	{
-		(void)b;
-		(void)n;
-	}
+
+//	while (!is_sorted_lst(*a))
+// /	{
+		recusive_quick_sort(a, b, n, 0);
+//	}
+	while (*b)
+		pa(a, b);
 }
 
 inline void			solver(t_lst **a, t_lst **b, size_t n)
@@ -260,7 +321,7 @@ inline void			solver(t_lst **a, t_lst **b, size_t n)
 		solver_tiny(a, b, n);
 	else if (n < 100)
 		solver_small(a, b, n);
-	else if (n < 1000)
+	else if (n < 110)
 		solver_medium(a, b, n);
 	else
 		solver_large(a, b, n);
