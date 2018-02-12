@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 18:54:28 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/11 22:24:33 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/18 22:18:31 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ inline void			checker(t_lst *a, t_lst *b)
 				op[i](&a, &b);
 				ft_dprintf(2, "\e[1;34m%s\e[0m\n", command[i]);
 				lst_display(a, b);
+				ft_dprintf(2, "\e[1;34mNB --> %d\e[0m\n", op_nb);
 				break;
 			}
 			++i;
 		}
 	}
-	ft_dprintf(2, "\e[1;34mNB --> %d\e[0m\n", op_nb);
 	(!b && is_sorted_lst(a)) ? ft_printf("OK\n") : ft_printf("KO\n");
 }

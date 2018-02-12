@@ -6,7 +6,7 @@
 /*   By: angavrel <angavrel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/08 23:20:33 by angavrel          #+#    #+#             */
-/*   Updated: 2018/02/11 23:32:28 by angavrel         ###   ########.fr       */
+/*   Updated: 2018/02/18 22:34:49 by angavrel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,85 @@ static inline void analyze_list(t_lst **a, size_t n, \
 // 6 operations:  4 3 1 0 2       0 2 4 3 1
 // 7 operations: 4 0 3 2 1   pb pb rr ss pa pa ra -> can you do better ? need to implement it
 
-static inline void should_we_swap(t_lst **a, t_lst **b)
+/*
+** checks the most suitable way to swap elems
+*/
+
+static inline int	should_we_swap(t_lst **a, t_lst **b)
 {
 	if (*b && (*b)->next)
 	{
 		if ((*a)->next->value < (*a)->value)
+		{
 			(*b)->next->value < (*b)->value ? ss(a, b) : sa(a, NULL);
+			return (1);
+		}
 		else if ((*b)->next->value < (*b)->value)
-				sb(NULL, b);
+		{
+			sb(NULL, b);
+			return (1);
+		}
+
 	}
-	if ((*a)->next->value < (*a)->value)
+	else if ((*a)->next->value < (*a)->value)
+	{
 		sa(a, NULL);
+		return (1);
+	}
+	return (0);
 }
 
+/*
+** checks the most suitable way to rotate elems
+*/
+/*
+static inline int	rev_rotate_opti(t_lst **a, t_lst **b)
+{
+	if (*b && (*b)->prev)
+	{
+		if ((*a)->prev->value > (*a)->value)
+		{
+			(*b)->prev->value > (*b)->value ? rrr(a, b) : rra(a, NULL);
+			return (1);
+		}
+		else if ((*b)->prev->value > (*b)->value)
+		{
+			rrb(NULL, b);
+			return (1);
+		}
+	}
+	if ((*a)->prev->value > (*a)->value)
+	{
+		rra(a, NULL);
+		return (1);
+	}
+	return (0);
+}
+*/
+/*
+static inline int	rotate_opti(t_lst **a, t_lst **b)
+{
+	if (*b && (*b)->next)
+	{
+		if ((*a)->prev->value > (*a)->value)
+		{
+			(*b)->prev->value > (*b)->value ? rr(a, b) : ra(a, NULL);
+			return (1);
+		}
+		else if ((*b)->prev->value > (*b)->value && (*b)->next->next != *b)
+		{
+			rb(NULL, b);
+			return (1);
+		}
+	}
+	if ((*a)->next->value > (*a)->value)
+	{
+		ra(a, NULL);
+		return (1);
+	}
+	return (0);
+}
+*/
 static inline void push_items(t_lst **a, t_lst **b, size_t nb)
 {
 	while (nb > 0)
@@ -268,37 +334,150 @@ static inline void	fill_a(t_lst **a, t_lst **b, size_t n)
 			pa(a, b);
 	}
 }
-*/
-static inline void	recusive_quick_sort(t_lst **a, t_lst **b, size_t n, size_t nbegin)
-{
-	size_t		n_b;
 
-	n_b = 0;
-	if (is_sorted_lst(*a) && !*b)
-		return ;
-	while (n_b < n / 2 && n_b >= nbegin)
+
+static void quick_sort_pb(t_lst **a, t_lst **b, size_t min, size_t max)
+{
+	while (min < max / 2)
 	{
 		//ft_dprintf(2, "heey 2\n");
-		should_we_swap(a, b);
+
 	//	ft_dprintf(2, "%zu, %zu, %zu\n", (*a)->value, n / 2, n_b);
-		if ((*a)->value >= n / 2 && ++n_b)
+	ft_dprintf(2, "if (%zu > %zu), ++%zu and pb\n", (*a)->value, max / 2, min);
+		if ((*a)->value > max / 2 && ++min)
 		{
 			pb(a, b);
+			getchar();
 	//		ft_dprintf(2, "heey 3\n");
 		}
+		if (!should_we_swap(a, b))
+			rotate_opti(a, b);
 
-		else
-			ra(a, b);
+		getchar();
 	}
-	while (n_b > n / 4 && n_b < nbegin)
-	{
-		should_we_swap(a, b);
-		if ((*b)->value >= n / 4 && (*b)->value <= n / 2 && n_b--)
-			pa(a, b);
-	}
-	recusive_quick_sort(a, b, n / 2, n / 2);
-	recusive_quick_sort(a, b, n / 2, 0);
 }
+
+static void quick_sort_pa(t_lst **a, t_lst **b, size_t min, size_t max)
+{
+	while (min >= max / 4)
+	{
+		ft_dprintf(2, "mmgdgfdgdfm if (%zu > %zu), ++%zu and pb\n", (*a)->value, max / 2, min);
+//		getchar();
+		if ((*b)->value <= (double)(max * 0.75) && min--)
+			pa(a, b);
+		if (!should_we_swap(a, b))
+			rotate_opti(a, b);
+	}
+}
+*/static void recusive_quick_sort_b(t_lst **a, t_lst **b, size_t max, size_t min);
+
+void recusive_quick_sort(t_lst **a, t_lst **b, size_t max, size_t min)
+{
+	size_t nb;
+	size_t size;
+	size_t current_max;
+
+	size = max - min;
+	nb = size / 2 + 1; // +1 ?
+	current_max = nb;
+	//getchar();
+	ft_dprintf(2, "Start of quicksort : test min %lu max %lu nb %lu other %lu\n", min, max, nb, (size) / 2 + min);
+	getchar();
+	while (nb)
+	{
+	//	ft_dprintf(2, "list a test min %lu max %lu nb %lu other %lu\n", min, max, nb, (size) / 2 + min);
+	//	getchar();
+
+		if ((*a)->value <= size / 2 + min) // median
+		{
+			//ft_dprintf(2, "test min %lu max %lu\n", min, max);
+			pb(a, b);
+			nb--;
+		}
+		else
+		{//getchar();
+			if ((*a)->value == current_max)
+			{
+				ra(a, NULL);
+				current_max++;
+			}
+			else if (!should_we_swap(a, b))
+				ra(a, NULL);
+		}
+
+	}
+
+//	ft_dprintf(2, "list a test min %lu max %lu nb %lu other %lu\n", min, max, nb, (size) / 2 + min);
+	recusive_quick_sort_b(a, b, max, size / 2 + min);
+	getchar();
+	if (max >= min)
+		recusive_quick_sort(a, b, size / 2 + min, min);
+}
+
+static void recusive_quick_sort_b(t_lst **a, t_lst **b, size_t max, size_t min)
+{
+	size_t size;
+	size_t nb;
+	size_t current_max;
+
+	size = max - min;
+	nb = min;
+	current_max = 1;
+	while (*b)
+	{
+		if ((*b)->value == nb)
+		{
+			pa(a, b);
+			--nb;
+		}
+		else if (nb == (*b)->value - 1 && current_max >= 1)
+		{
+			pa(a, b);
+			--nb;
+			--current_max;
+		}
+		else if (nb == (*b)->value + 1 && current_max <= 1)
+		{
+			pa(a, b);
+			--nb;
+			++current_max;
+		}
+		else if (!should_we_swap(a, b))
+			rb(a, b);
+		ft_dprintf(2, "%zu %zu %zu\n", nb, max, min);
+	}
+	if (max >= min)
+		recusive_quick_sort_b(a, b, max, size / 2 + min);
+	recusive_quick_sort(a, b, size / 2 + min, min);
+}
+/*
+static inline void	recusive_quick_sort(t_lst **a, t_lst **b, size_t min, size_t max)
+{
+	//size_t		n_b;
+
+	if (min == 1 || max == 1)
+		return ;
+	getchar();
+	//ft_dprintf(2, "heyyy if (%zu > %zu), n_b = %zu n_begin = %zu and pa\n", (*a)->value, n / 4, n_b, nbegin);
+	//getchar();
+	recusive_quick_sort(a, b, min / 4, max / 2);
+	recusive_quick_sort(a, b, 0, max / 4);
+}*/
+/*
+
+static void	recusive_quick_sort(t_lst **a, t_lst **b, size_t min, size_t max)
+{
+	division de la liste en deux sur liste b
+	rec2(); seconde fonction de recursion que ne fait que push la liste b dans a par strats de n / 2
+	rec(); rapel de la fonction pour la partie restante de la liste a;
+}
+rec2 s'arrete quand plus ren sur la liste b;
+rec est recursif jusqu'a ce qu'il y ai plus qu'un element // un ou plutot 3
+
+
+*/
+
+
 
 /*
 ** quicksort
@@ -317,7 +496,9 @@ static inline void	solver_large(t_lst **a, t_lst **b, size_t n)
 
 inline void			solver(t_lst **a, t_lst **b, size_t n)
 {
-	if (n < 10)
+	if (n == 31)
+		solver_large(a, b, n);
+	else if (n < 10)
 		solver_tiny(a, b, n);
 	else if (n < 100)
 		solver_small(a, b, n);
